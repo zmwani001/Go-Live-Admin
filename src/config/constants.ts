@@ -45,11 +45,11 @@ export const CONTENT_TYPE_CONFIG: Record<ContentType, ContentTypeMeta> = {
     key: 'deck',
     label: 'Deck',
     shortLabel: 'Deck',
-    color: '#6366F1', // Indigo
-    badgeBg: '#EEF2FF',
-    badgeBorder: '#C7D2FE',
-    badgeText: '#4338CA',
-    dotColor: '#6366F1',
+    color: '#0F7C83',
+    badgeBg: '#E4F4F2',
+    badgeBorder: '#B7DFDB',
+    badgeText: '#0C5E63',
+    dotColor: '#0F7C83',
     sizeLabel: 'Slides / deck',
     sizeUnit: 'slides',
   },
@@ -98,4 +98,11 @@ export const ADMIN_ALLOWLIST = [
   'lead@appinventiv.com',
 ];
 
-export type DateRange = '7d' | '30d' | '90d';
+export type PresetDateRange = '7d' | '30d' | '90d';
+
+export interface CustomDateRange {
+  startDate: string;
+  endDate: string;
+}
+
+export type DateRange = PresetDateRange | CustomDateRange;

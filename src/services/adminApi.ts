@@ -24,6 +24,15 @@ const ANCHOR_TIME = new Date('2026-11-05T18:30:00.000Z').getTime();
 const delay = (ms: number = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function getRangeDays(range: DateRange): number {
+  if (typeof range !== 'string') {
+    const startTime = getDateStartTime(range.startDate);
+    const endTime = getDateStartTime(range.endDate);
+    if (startTime > endTime) {
+      throw new RangeError('The start date must be on or before the end date.');
+    }
+    return Math.floor((endTime - startTime) / (24 * 60 * 60 * 1000)) + 1;
+  }
+
   switch (range) {
     case '7d':
       return 7;
@@ -33,6 +42,42 @@ function getRangeDays(range: DateRange): number {
     default:
       return 30;
   }
+}
+
+function getDateStartTime(date: string): number {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    throw new RangeError(`Invalid date: ${date}`);
+  }
+  const timestamp = Date.parse(`${date}T00:00:00.000Z`);
+  if (!Number.isFinite(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== date) {
+    throw new RangeError(`Invalid date: ${date}`);
+  }
+  return timestamp;
+}
+
+function getRangeBounds(range: DateRange): {
+  startTime: number;
+  endTime: number;
+  dailyStartTime: number;
+  days: number;
+} {
+  const msInDay = 24 * 60 * 60 * 1000;
+  const days = getRangeDays(range);
+  if (typeof range !== 'string') {
+    const startTime = getDateStartTime(range.startDate);
+    const endTime = getDateStartTime(range.endDate) + msInDay - 1;
+    return { startTime, endTime, dailyStartTime: startTime, days };
+  }
+
+  const startTime = ANCHOR_TIME - days * msInDay;
+  const endTime = ANCHOR_TIME;
+  const anchorDayStart = getDateStartTime(new Date(ANCHOR_TIME).toISOString().slice(0, 10));
+  return {
+    startTime,
+    endTime,
+    dailyStartTime: anchorDayStart - (days - 1) * msInDay,
+    days,
+  };
 }
 
 /**
@@ -48,10 +93,10 @@ function filterUsers(includeInternal: boolean): UserItem[] {
  */
 function isGenInRange(
   genTime: number,
-  cutoffTime: number,
-  startTime: number = ANCHOR_TIME
+  startTime: number,
+  endTime: number
 ): boolean {
-  return genTime >= cutoffTime && genTime <= startTime;
+  return genTime >= startTime && genTime <= endTime;
 }
 
 export const adminApi = {
@@ -87,10 +132,11 @@ export const adminApi = {
   ): Promise<OverviewResponse> {
     await delay(250);
 
-    const rangeDays = getRangeDays(range);
+    const { startTime: currentStart, endTime: currentEnd, dailyStartTime, days: rangeDays } =
+      getRangeBounds(range);
     const msInDay = 24 * 60 * 60 * 1000;
-    const currentCutoff = ANCHOR_TIME - rangeDays * msInDay;
-    const previousCutoff = currentCutoff - rangeDays * msInDay;
+    const previousStart = currentStart - rangeDays * msInDay;
+    const previousEnd = currentStart - 1;
 
     const allowedUsers = filterUsers(includeInternal);
     const allowedUserIds = new Set(allowedUsers.map((u) => u.id));
@@ -100,25 +146,25 @@ export const adminApi = {
       if (!allowedUserIds.has(g.userId)) return false;
       if (typeFilter !== 'all' && g.type !== typeFilter) return false;
       const t = new Date(g.createdAt).getTime();
-      return isGenInRange(t, currentCutoff, ANCHOR_TIME);
+      return isGenInRange(t, currentStart, currentEnd);
     });
 
     const previousGens = MOCK_GENERATIONS.filter((g) => {
       if (!allowedUserIds.has(g.userId)) return false;
       if (typeFilter !== 'all' && g.type !== typeFilter) return false;
       const t = new Date(g.createdAt).getTime();
-      return isGenInRange(t, previousCutoff, currentCutoff);
+      return isGenInRange(t, previousStart, previousEnd);
     });
 
     // User signups in range
     const currentSignups = allowedUsers.filter((u) => {
       const t = new Date(u.signupAt).getTime();
-      return isGenInRange(t, currentCutoff, ANCHOR_TIME);
+      return isGenInRange(t, currentStart, currentEnd);
     }).length;
 
     const previousSignups = allowedUsers.filter((u) => {
       const t = new Date(u.signupAt).getTime();
-      return isGenInRange(t, previousCutoff, currentCutoff);
+      return isGenInRange(t, previousStart, previousEnd);
     }).length;
 
     // Total users as of anchor time vs previous period
@@ -127,7 +173,7 @@ export const adminApi = {
     ).length;
 
     const totalUsersPrev = allowedUsers.filter(
-      (u) => new Date(u.signupAt).getTime() <= currentCutoff
+      (u) => new Date(u.signupAt).getTime() < currentStart
     ).length;
 
     // Active users: DAU (last 24h) and WAU (last 7d)
@@ -149,15 +195,15 @@ export const adminApi = {
     const wau = activeUserIdsWau.size;
 
     // Previous DAU / WAU
-    const prevDauCutoffStart = currentCutoff - 1 * msInDay;
-    const prevWauCutoffStart = currentCutoff - 7 * msInDay;
+    const prevDauCutoffStart = currentStart - 1 * msInDay;
+    const prevWauCutoffStart = currentStart - 7 * msInDay;
 
     const prevActiveDau = new Set(
       MOCK_GENERATIONS.filter(
         (g) =>
           allowedUserIds.has(g.userId) &&
           new Date(g.createdAt).getTime() >= prevDauCutoffStart &&
-          new Date(g.createdAt).getTime() <= currentCutoff
+          new Date(g.createdAt).getTime() < currentStart
       ).map((g) => g.userId)
     ).size;
 
@@ -166,7 +212,7 @@ export const adminApi = {
         (g) =>
           allowedUserIds.has(g.userId) &&
           new Date(g.createdAt).getTime() >= prevWauCutoffStart &&
-          new Date(g.createdAt).getTime() <= currentCutoff
+          new Date(g.createdAt).getTime() < currentStart
       ).map((g) => g.userId)
     ).size;
 
@@ -200,8 +246,8 @@ export const adminApi = {
       costByType: Record<ContentType, number>;
     }>();
 
-    for (let d = rangeDays - 1; d >= 0; d--) {
-      const dayDate = new Date(ANCHOR_TIME - d * msInDay);
+    for (let d = 0; d < rangeDays; d++) {
+      const dayDate = new Date(dailyStartTime + d * msInDay);
       const dateStr = dayDate.toISOString().split('T')[0];
       dailyMap.set(dateStr, {
         date: dateStr,
@@ -280,6 +326,7 @@ export const adminApi = {
     await delay(200);
 
     const {
+      range,
       type: typeFilter,
       includeInternal,
       search = '',
@@ -289,6 +336,11 @@ export const adminApi = {
 
     const pageSize = 25;
     let users = filterUsers(includeInternal);
+    const { startTime, endTime } = getRangeBounds(range);
+    users = users.filter((user) => {
+      const signupTime = new Date(user.signupAt).getTime();
+      return signupTime >= startTime && signupTime <= endTime;
+    });
 
     // Apply search filter (name or email)
     if (search.trim()) {
@@ -455,8 +507,7 @@ export const adminApi = {
   ): Promise<AiCostsResponse> {
     await delay(250);
 
-    const rangeDays = getRangeDays(range);
-    const cutoffTime = ANCHOR_TIME - rangeDays * 24 * 60 * 60 * 1000;
+    const { startTime, endTime } = getRangeBounds(range);
 
     const allowedUsers = filterUsers(includeInternal);
     const allowedUserIds = new Set(allowedUsers.map((u) => u.id));
@@ -466,7 +517,7 @@ export const adminApi = {
       if (!allowedUserIds.has(g.userId)) return false;
       if (typeFilter !== 'all' && g.type !== typeFilter) return false;
       const t = new Date(g.createdAt).getTime();
-      return isGenInRange(t, cutoffTime, ANCHOR_TIME);
+      return isGenInRange(t, startTime, endTime);
     });
 
     // 1. byType table metrics

@@ -9,13 +9,17 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8FAFC;
+    background: linear-gradient(115deg, #D9F3F0 0%, #F3F8FA 48%, #DCE7FA 100%);
     color: #0F172A;
   }
 
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: var(--font-display);
   }
+}
+
+.brand-page-background {
+  background: linear-gradient(115deg, #D9F3F0 0%, #F3F8FA 48%, #DCE7FA 100%);
 }
 
 .tnum {

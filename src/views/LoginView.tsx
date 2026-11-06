@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Sparkles, ShieldAlert, LogIn, Lock, Mail } from 'lucide-react';
+import { Sparkles, ShieldAlert, LogIn, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import { ADMIN_ALLOWLIST } from '../config/constants';
 
 interface LoginViewProps {
@@ -12,8 +12,9 @@ interface LoginViewProps {
 }
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
-  const [email, setEmail] = useState('zubair.wani@appinventiv.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [deniedEmail, setDeniedEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,13 +38,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
 
   const handleSignOutDenied = () => {
     setDeniedEmail(null);
-    setEmail('zubair.wani@appinventiv.com');
+    setEmail('');
   };
 
   // If user signed in with non-allowlisted email:
   if (deniedEmail) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="brand-page-background min-h-screen flex items-center justify-center p-4">
         <div className="bg-white max-w-md w-full rounded-xl border border-slate-200 p-8 shadow-sm text-center">
           <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-4 border border-rose-100">
             <ShieldAlert size={28} />
@@ -62,20 +63,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <button
               type="button"
               onClick={handleSignOutDenied}
-              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+              className="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
             >
               Sign out & try another account
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setDeniedEmail(null);
-                setEmail('zubair.wani@appinventiv.com');
-                onLoginSuccess('zubair.wani@appinventiv.com');
-              }}
-              className="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-colors"
-            >
-              Use demo admin (zubair.wani@appinventiv.com)
             </button>
           </div>
         </div>
@@ -84,11 +74,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="brand-page-background min-h-screen flex items-center justify-center p-4">
       <div className="bg-white max-w-md w-full rounded-xl border border-slate-200 p-8 shadow-sm">
         {/* Brand Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-teal-600 text-white flex items-center justify-center shadow-xs">
             <Sparkles size={20} />
           </div>
           <div>
@@ -112,7 +102,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@appinventiv.com"
-                className="w-full h-9 pl-9 pr-3 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
+                className="w-full h-9 pl-9 pr-3 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
               />
             </div>
           </div>
@@ -125,13 +115,22 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
               <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 id="login-pwd"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-9 pl-9 pr-3 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
+                className="w-full h-9 pl-9 pr-10 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-100 rounded"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 
@@ -139,7 +138,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-9 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold rounded-md shadow-xs flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
+              className="w-full h-9 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-xs font-semibold rounded-md shadow-xs flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
             >
               {isLoading ? (
                 <span>Checking access...</span>
@@ -153,35 +152,6 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
           </div>
         </form>
 
-        {/* Allow-list hint / quick test pills */}
-        <div className="mt-6 pt-5 border-t border-slate-100">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">
-            Authorized Allow-list Emails:
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {ADMIN_ALLOWLIST.map((allowed) => (
-              <button
-                key={allowed}
-                type="button"
-                onClick={() => setEmail(allowed)}
-                className={`text-[11px] font-mono px-2 py-0.5 rounded border transition-colors ${
-                  email === allowed
-                    ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-medium'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                {allowed}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setEmail('unauthorized.guest@company.com')}
-              className="text-[11px] font-mono px-2 py-0.5 rounded border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors"
-            >
-              test-denied@company.com
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

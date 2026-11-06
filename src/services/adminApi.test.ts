@@ -23,6 +23,25 @@ test('adminApi.getOverview calculates totals and content type breakdowns', async
   assert.equal(overview.createdByType[4].type, 'dashboard');
 });
 
+test('adminApi applies an exact custom date to overview and AI cost data', async () => {
+  const range = { startDate: '2026-11-05', endDate: '2026-11-05' };
+  const [overview, costs] = await Promise.all([
+    adminApi.getOverview(range, 'all', false),
+    adminApi.getAiCosts(range, 'all', false),
+  ]);
+  const dailyGenerationCount = overview.daily[0].generationsByType
+    ? Object.values(overview.daily[0].generationsByType).reduce((sum, count) => sum + count, 0)
+    : 0;
+
+  assert.equal(overview.daily.length, 1);
+  assert.equal(overview.daily[0].date, range.startDate);
+  assert.equal(dailyGenerationCount, overview.totals.generations);
+  assert.equal(
+    costs.byType.reduce((sum, item) => sum + item.count, 0),
+    overview.totals.generations
+  );
+});
+
 test('adminApi.getUsers searches and filters users', async () => {
   const res = await adminApi.getUsers({
     range: '30d',

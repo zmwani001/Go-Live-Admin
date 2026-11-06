@@ -164,7 +164,7 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
 
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-2xs">
           <span className="text-xs font-semibold text-slate-500 block mb-1 flex items-center gap-1">
-            <Sparkles size={13} className="text-indigo-600" />
+            <Sparkles size={13} className="text-teal-600" />
             Prompt Helper & Copilot Cost
           </span>
           <div className="text-xl font-bold text-slate-900">
@@ -199,10 +199,10 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                 <th className="py-3 px-4">Content Type</th>
                 <th className="py-3 px-4 text-right">Generations</th>
                 <th className="py-3 px-4 text-right">Average Cost</th>
-                <th className="py-3 px-4 text-right font-semibold text-indigo-900">
+                <th className="py-3 px-4 text-right font-semibold text-teal-900">
                   Median Cost
                 </th>
-                <th className="py-3 px-4 text-right font-semibold text-indigo-900">
+                <th className="py-3 px-4 text-right font-semibold text-teal-900">
                   90th Percentile (P90)
                 </th>
                 <th className="py-3 px-4 text-right">Avg Duration</th>
@@ -228,11 +228,11 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                     <td className="py-3 px-4 text-right whitespace-nowrap">
                       <MoneyDisplay amountInr={row.avgInr} />
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-semibold text-indigo-950 whitespace-nowrap tnum bg-indigo-50/20">
-                      <MoneyDisplay amountInr={row.medianInr} inrClassName="font-semibold text-indigo-900" />
+                    <td className="py-3 px-4 text-right font-mono font-semibold text-teal-950 whitespace-nowrap tnum bg-teal-50/20">
+                      <MoneyDisplay amountInr={row.medianInr} inrClassName="font-semibold text-teal-900" />
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-semibold text-indigo-950 whitespace-nowrap tnum bg-indigo-50/30">
-                      <MoneyDisplay amountInr={row.p90Inr} inrClassName="font-semibold text-indigo-900" />
+                    <td className="py-3 px-4 text-right font-mono font-semibold text-teal-950 whitespace-nowrap tnum bg-teal-50/30">
+                      <MoneyDisplay amountInr={row.p90Inr} inrClassName="font-semibold text-teal-900" />
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-slate-700 tnum">
                       {(row.avgDurationMs / 1000).toFixed(1)}s
@@ -290,7 +290,7 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                 />
                 <Legend />
                 <Bar dataKey="Average Cost" fill="#94A3B8" radius={[2, 2, 0, 0]} />
-                <Bar dataKey="Median Cost" fill="#6366F1" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="Median Cost" fill="#0F7C83" radius={[2, 2, 0, 0]} />
                 <Bar dataKey="P90 Cost" fill="#312E81" radius={[2, 2, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -372,7 +372,7 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                   onClick={() => setModelTypeFilter(t)}
                   className={`px-2 py-0.5 rounded ${
                     modelTypeFilter === t
-                      ? 'bg-indigo-600 text-white font-medium'
+                      ? 'bg-teal-600 text-white font-medium'
                       : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -422,7 +422,7 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
         <div className="bg-white rounded-lg border border-slate-200 shadow-2xs p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-1.5 mb-1">
-              <Sparkles size={16} className="text-indigo-600" />
+              <Sparkles size={16} className="text-teal-600" />
               <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                 Prompt Helpers & Copilot
               </h3>
@@ -500,11 +500,11 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                   onClick={() => onSelectUser(spender.userId)}
                   className="hover:bg-slate-50 cursor-pointer transition-colors group"
                 >
-                  <td className="py-2.5 px-4 font-mono font-bold text-slate-400 group-hover:text-indigo-600">
+                  <td className="py-2.5 px-4 font-mono font-bold text-slate-400 group-hover:text-teal-600">
                     #{index + 1}
                   </td>
                   <td className="py-2.5 px-4">
-                    <div className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    <div className="font-semibold text-slate-900 group-hover:text-teal-600 transition-colors">
                       {spender.name}
                     </div>
                     <div className="text-[11px] text-slate-500 font-mono truncate max-w-xs">
@@ -530,7 +530,7 @@ export const AiCostsView: React.FC<AiCostsViewProps> = ({
                     <MoneyDisplay amountInr={spender.spendInr} decimalsInr={0} decimalsUsd={1} />
                   </td>
                   <td className="py-2.5 px-4 text-center">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 group-hover:text-indigo-800">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-600 group-hover:text-teal-800">
                       <span>View</span>
                       <ArrowRight size={12} />
                     </span>

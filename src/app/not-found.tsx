@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="mt-2 text-sm text-slate-600">The page you requested does not exist.</p>
       <Link
         href="/overview"
-        className="mt-5 text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+        className="mt-5 text-sm font-semibold text-teal-600 hover:text-teal-800"
       >
         Return to overview
       </Link>

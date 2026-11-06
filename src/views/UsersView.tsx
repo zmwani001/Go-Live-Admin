@@ -158,9 +158,9 @@ export const UsersView: React.FC<UsersViewProps> = ({
       return <ArrowUpDown size={11} className="text-slate-300 ml-1 inline" />;
     }
     return sortDirection === 'asc' ? (
-      <ArrowUp size={12} className="text-indigo-600 ml-1 inline" />
+      <ArrowUp size={12} className="text-teal-600 ml-1 inline" />
     ) : (
-      <ArrowDown size={12} className="text-indigo-600 ml-1 inline" />
+      <ArrowDown size={12} className="text-teal-600 ml-1 inline" />
     );
   };
 
@@ -207,7 +207,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
             <button
               type="button"
               onClick={() => onClearSelectedUser?.()}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800 mb-2 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-800 mb-2 transition-colors"
             >
               <ChevronLeft size={14} />
               <span>Back to all users</span>
@@ -236,7 +236,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
           <button
             type="button"
             onClick={() => setIsGiveModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold rounded-md shadow-xs transition-colors self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-xs font-semibold rounded-md shadow-xs transition-colors self-start sm:self-auto"
           >
             <Gift size={14} />
             <span>Give more free generations</span>
@@ -324,11 +324,11 @@ export const UsersView: React.FC<UsersViewProps> = ({
           </div>
 
           {/* Free Gens Left */}
-          <div className="bg-white p-3.5 rounded-lg border border-indigo-200 bg-indigo-50/40 shadow-2xs">
-            <div className="text-[11px] font-semibold text-indigo-700 mb-1">
+          <div className="bg-white p-3.5 rounded-lg border border-teal-200 bg-teal-50/40 shadow-2xs">
+            <div className="text-[11px] font-semibold text-teal-700 mb-1">
               Free Left
             </div>
-            <div className="text-lg font-bold text-indigo-700 tnum">
+            <div className="text-lg font-bold text-teal-700 tnum">
               {formatIndianNumber(user.freeGenerationsLeft)}
             </div>
           </div>
@@ -366,7 +366,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
                   onClick={() => setDetailTypeFilter(t)}
                   className={`px-2 py-0.5 rounded flex items-center gap-1 ${
                     detailTypeFilter === t
-                      ? 'bg-indigo-600 text-white font-medium'
+                      ? 'bg-teal-600 text-white font-medium'
                       : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -492,7 +492,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
               setPage(1);
             }}
             placeholder="Search by user name or email address..."
-            className="w-full h-9 pl-9 pr-3 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+            className="w-full h-9 pl-9 pr-3 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600 focus:bg-white focus:ring-2 focus:ring-teal-100"
           />
         </div>
 
@@ -617,7 +617,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
                     onClick={() => onSelectUser(user.id)}
                     className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
                   >
-                    <td className="py-2.5 px-3.5 font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors whitespace-nowrap">
+                    <td className="py-2.5 px-3.5 font-semibold text-slate-900 group-hover:text-teal-600 transition-colors whitespace-nowrap">
                       <div className="flex items-center gap-1.5">
                         <span>{user.name}</span>
                         {user.isInternal && (
@@ -660,7 +660,7 @@ export const UsersView: React.FC<UsersViewProps> = ({
                     <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
                       <MoneyDisplay amountInr={user.spendInr} decimalsInr={0} decimalsUsd={1} />
                     </td>
-                    <td className="py-2.5 px-3 text-right font-mono font-semibold text-indigo-700 tnum">
+                    <td className="py-2.5 px-3 text-right font-mono font-semibold text-teal-700 tnum">
                       {user.freeGenerationsLeft}
                     </td>
                   </tr>

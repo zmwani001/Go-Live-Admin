@@ -43,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab }) => {
       <div>
         {/* Product Brand Header */}
         <div className="h-16 px-6 border-b border-slate-200 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+          <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center shadow-xs">
             <Sparkles size={18} />
           </div>
           <div>
@@ -73,14 +73,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab }) => {
                 aria-current={isActive ? 'page' : undefined}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all text-left ${
                   isActive
-                    ? 'bg-indigo-50 text-indigo-700 font-semibold'
+                    ? 'bg-teal-50 text-teal-700 font-semibold'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 <Icon
                   size={18}
                   className={`shrink-0 ${
-                    isActive ? 'text-indigo-600' : 'text-slate-400'
+                    isActive ? 'text-teal-600' : 'text-slate-400'
                   }`}
                 />
                 <div className="flex-1 truncate">

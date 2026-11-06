@@ -110,6 +110,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   const wauDelta = calculatePercentChange(totals.wau, previous.wau);
   const genDelta = calculatePercentChange(totals.generations, previous.generations);
   const costDelta = calculatePercentChange(totals.costInr, previous.costInr);
+  const comparisonLabel =
+    typeof dateRange === 'string'
+      ? `Compared to previous ${dateRange} period`
+      : `Compared to the previous period of equal length (${dateRange.startDate} – ${dateRange.endDate})`;
 
   // Donut chart data
   const donutData = createdByType
@@ -129,7 +133,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             Key Performance Indicators
           </h2>
           <span className="text-[11px] text-slate-400">
-            Compared to previous {dateRange} period
+            {comparisonLabel}
           </span>
         </div>
 
@@ -201,7 +205,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors">
             <div className="flex items-center justify-between text-slate-500 mb-1">
               <span className="text-xs font-medium">Weekly active users</span>
-              <Radio size={14} className="text-indigo-500" />
+              <Radio size={14} className="text-teal-500" />
             </div>
             <div className="text-xl font-bold text-slate-900 tnum">
               {formatIndianNumber(totals.wau)}
@@ -222,7 +226,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors">
             <div className="flex items-center justify-between text-slate-500 mb-1">
               <span className="text-xs font-medium">Total AI generations</span>
-              <Layers size={14} className="text-indigo-600" />
+              <Layers size={14} className="text-teal-600" />
             </div>
             <div className="text-xl font-bold text-slate-900 tnum">
               {formatIndianNumber(totals.generations)}
@@ -276,7 +280,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <button
             type="button"
             onClick={onNavigateToAiCosts}
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+            className="text-xs font-semibold text-teal-600 hover:text-teal-700"
           >
             View unit cost breakdown →
           </button>
@@ -355,7 +359,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 Stacked by content format over time
               </p>
             </div>
-            <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+            <span className="text-xs font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
               {formatIndianNumber(totals.generations)} Total
             </span>
           </div>
@@ -485,7 +489,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             <button
               type="button"
               onClick={onNavigateToUsers}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+              className="text-xs font-semibold text-teal-600 hover:text-teal-700"
             >
               Manage Users →
             </button>
@@ -515,7 +519,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   type="monotone"
                   dataKey="activeUsers"
                   name="Active Users"
-                  stroke="#6366F1"
+                  stroke="#0F7C83"
                   strokeWidth={2}
                   dot={false}
                 />

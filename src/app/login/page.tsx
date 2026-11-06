@@ -7,19 +7,20 @@ import { usePortalState } from '../portal-state';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { adminEmail, signIn } = usePortalState();
+  const { authReady, adminEmail, pendingAdminEmail, beginSignIn } = usePortalState();
 
   useEffect(() => {
     if (adminEmail) router.replace('/overview');
-  }, [adminEmail, router]);
+    else if (pendingAdminEmail) router.replace('/verify-otp');
+  }, [adminEmail, pendingAdminEmail, router]);
 
-  if (adminEmail) return null;
+  if (!authReady || adminEmail || pendingAdminEmail) return null;
 
   return (
     <LoginView
       onLoginSuccess={(email) => {
-        signIn(email);
-        router.replace('/overview');
+        beginSignIn(email);
+        router.replace('/verify-otp');
       }}
     />
   );

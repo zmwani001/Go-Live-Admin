@@ -10,6 +10,7 @@ export default function PortalLayout({ children }: Readonly<{ children: ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const {
+    authReady,
     adminEmail,
     signOut,
     dateRange,
@@ -21,10 +22,10 @@ export default function PortalLayout({ children }: Readonly<{ children: ReactNod
   } = usePortalState();
 
   useEffect(() => {
-    if (!adminEmail) router.replace('/login');
-  }, [adminEmail, router]);
+    if (authReady && !adminEmail) router.replace('/login');
+  }, [authReady, adminEmail, router]);
 
-  if (!adminEmail) return null;
+  if (!authReady || !adminEmail) return null;
 
   const currentTab = pathname.startsWith('/users')
     ? 'users'
@@ -33,7 +34,7 @@ export default function PortalLayout({ children }: Readonly<{ children: ReactNod
       : 'overview';
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex antialiased selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="brand-page-background min-h-screen text-slate-900 font-sans flex antialiased selection:bg-teal-100 selection:text-teal-900">
       <Sidebar currentTab={currentTab} />
       <div className="flex-1 flex flex-col min-w-0">
         <Header

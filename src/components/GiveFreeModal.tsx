@@ -59,7 +59,7 @@ export const GiveFreeModal: React.FC<GiveFreeModalProps> = ({
       <div className="bg-white w-full max-w-md rounded-lg border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-md bg-teal-50 text-teal-600 flex items-center justify-center">
               <Gift size={16} />
             </div>
             <div>
@@ -106,7 +106,7 @@ export const GiveFreeModal: React.FC<GiveFreeModalProps> = ({
               required
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
-              className="w-full h-9 px-3 bg-white border border-slate-300 rounded-md text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 tnum"
+              className="w-full h-9 px-3 bg-white border border-slate-300 rounded-md text-sm text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100 tnum"
             />
             {/* Quick selectors */}
             <div className="flex items-center gap-2 mt-2">
@@ -117,7 +117,7 @@ export const GiveFreeModal: React.FC<GiveFreeModalProps> = ({
                   onClick={() => setAmount(preset)}
                   className={`px-2 py-0.5 text-xs font-medium rounded border transition-colors ${
                     amount === preset
-                      ? 'bg-indigo-50 border-indigo-300 text-indigo-700'
+                      ? 'bg-teal-50 border-teal-300 text-teal-700'
                       : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -137,7 +137,7 @@ export const GiveFreeModal: React.FC<GiveFreeModalProps> = ({
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="e.g. Unblocking beta tester / compensated for generation error"
-              className="w-full p-2.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
+              className="w-full p-2.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             />
           </div>
 
@@ -160,7 +160,7 @@ export const GiveFreeModal: React.FC<GiveFreeModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-8 px-4 rounded-md bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+              className="h-8 px-4 rounded-md bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Granting...</span>

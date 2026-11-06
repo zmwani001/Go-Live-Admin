@@ -30,7 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-[#EEF2FF] selection:text-[#4F46E5]">
+      <body className="text-[#0F172A] antialiased selection:bg-teal-100 selection:text-teal-900">
         <PortalStateProvider>{children}</PortalStateProvider>
       </body>
     </html>
