@@ -1,0 +1,6 @@
+{
+  "name": "Go Live Console",
+  "description": "Mission-critical administrative operations console for AI presentation, design generation, and real-time inference pipeline management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
